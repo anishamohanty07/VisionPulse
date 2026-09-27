@@ -1,0 +1,7 @@
+flask==2.3.3
+flask-socketio==5.3.6
+aiohttp==3.9.1
+opencv-python==4.8.1.78
+numpy==1.26.2
+python-socketio==5.10.0
+eventlet==0.35.1
