@@ -16,7 +16,7 @@ python
 if (green_pixel_count> THRESHOLD):
    wildlife_confidence = calculated_confidence()
 # 2. Risk Calculation (Weighted Algorithm)
-risk_score = (wildlife_confidence*100*0.6)+(vibration_magnitude*50*0.4)
+risk_score = (wildlife_confidence * 100 * 0.6) + (vibration_magnitude * 50 * 0.4)
 # 3. Alert Categorization
 if (risk_score <60): status= "SAFE"
 elif (risk_score <80): status= "WARNING"
