@@ -35,3 +35,20 @@ send_to_dashboard(status, risk_score)
 * Zero-latency WebSocket updates (NO page refresh required).
 * Three specialized UI views for different operational needs.
 * Dual-threat detection (Wildlife and Landslides).
+## Tech Stack
+**Python 3.x** - Core programming language for backend logic.
+**Flask** - Lightweight web framework for building APIs.
+**OpenCV & NumPy** - Image processing and matrix calculations for hazard detection.
+**HTML/CSS/JS** - Responsive frontend UI and DOM manipulation.
+## How to Run
+### Terminal 1: Start the Data Simulator
+bash
+python data_simulator.py
+### Terminal 2: Start the Main Dashboard
+bash
+python main_app.py
+
+**Access the Dashboards:**
+* Main Dashboard: 'http://localhost:5000/'
+* Driver HUD: 'http://localhost:5000/driver'
+* Control Room: 'http://localhost:5000/control'
