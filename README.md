@@ -13,7 +13,7 @@ Data Simulator (Port 8080) -> HTTP/JSON -> Main Dashboard (Port 5000) -> Web Soc
 ## Detection Logic
 python
 # 1. Wildlife Detection (HSV color space)
-if (green_pixel_count> THRESOLD):
+if (green_pixel_count> THRESHOLD):
    wildlife_confidence = calculated_confidence()
 # 2. Risk Calculation (Weighted Algorithm)
 risk_score = (wildlife_confidence*100*0.6)+(vibration_magnitude*50*0.4)
@@ -36,10 +36,10 @@ send_to_dashboard(status, risk_score)
 * Three specialized UI views for different operational needs.
 * Dual-threat detection (Wildlife and Landslides).
 ## Tech Stack
-**Python 3.x** - Core programming language for backend logic.
-**Flask** - Lightweight web framework for building APIs.
-**OpenCV & NumPy** - Image processing and matrix calculations for hazard detection.
-**HTML/CSS/JS** - Responsive frontend UI and DOM manipulation.
+1. **Python 3.x** - Core programming language for backend logic.
+2. **Flask** - Lightweight web framework for building APIs.
+3. **OpenCV & NumPy** - Image processing and matrix calculations for hazard detection.
+4. **HTML/CSS/JS** - Responsive frontend UI and DOM manipulation.
 ## How to Run
 ### Terminal 1: Start the Data Simulator
 bash
