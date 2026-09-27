@@ -26,9 +26,9 @@ class RiskCalculator:
         return min(round(wildlife_score + landslide_score, 2), 100)
     
     def get_risk_level(self, score):
-        if score < 30:
+        if score < 60:
             return 'SAFE', 'green'
-        elif score < 70:
+        elif score < 80:
             return 'WARNING', 'yellow'
         else:
             return 'CRITICAL', 'red'
@@ -78,7 +78,8 @@ class DetectionSystem:
             hazard_types.append('WILDLIFE')
         if landslide_detected:
             hazard_types.append('LANDSLIDE')
-        
+        if risk_level == 'SAFE':
+            hazard_types = []
         if risk_score >= 30:
             log_entry = {
                 'timestamp': sensor_data.get('timestamp'),
@@ -111,7 +112,7 @@ detection_system = DetectionSystem()
 async def fetch_from_simulator():
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get('http://localhost:8080/data') as response:
+            async with session.get('http://127.0.0.1:8080/data') as response:
                 return await response.json()
         except Exception as e:
             print(f"Cannot reach simulator: {e}")
@@ -277,7 +278,13 @@ MAIN_DASHBOARD = '''
             document.getElementById('risk-level').textContent = data.risk_level;
             
             const hazardDiv = document.getElementById('hazard-types');
-            if (data.hazard_types.length > 0) {
+            
+            // If the system is SAFE, show "No Obstacle"
+            if (data.risk_level === 'SAFE') {
+                hazardDiv.innerHTML = '<span style="color: #4CAF60; font-weight: bold; font-size: 22px;">No Obstacle</span>';
+            } 
+            // Otherwise, show the specific hazards (Wildlife/Landslide)
+            else if (data.hazard_types.length > 0) {
                 hazardDiv.innerHTML = data.hazard_types.map(h => 
                     `<span class="hazard-tag ${h.toLowerCase()}">${h}</span>`
                 ).join('');
@@ -424,7 +431,13 @@ DRIVER_HUD = '''
             const alertBox = document.getElementById('alert-box');
             const hazardDetails = document.getElementById('hazard-details');
             
-            if (data.hazard_types.length > 0) {
+            // NEW CODE FOR DRIVER HUD:
+            if (data.risk_level === 'SAFE') {
+                alertBox.className = 'alert-box all-clear';
+                alertBox.innerHTML = 'NO OBSTACLE - PROCEED';
+                hazardDetails.innerHTML = '';
+            } 
+            else if (data.hazard_types.length > 0) {
                 alertBox.className = 'alert-box hazard-warning';
                 alertBox.innerHTML = data.hazard_types.join(' + ') + ' DETECTED!';
                 hazardDetails.innerHTML = data.hazard_types.map(h => {
@@ -646,8 +659,11 @@ CONTROL_ROOM = '''
             document.getElementById('wildlife-count').textContent = wildlifeCount;
             document.getElementById('landslide-count').textContent = landslideCount;
             
+            // Update active alerts
             const alertsDiv = document.getElementById('active-alerts');
-            if (data.hazard_types.length > 0) {
+            if (data.risk_level === 'SAFE') {
+                alertsDiv.innerHTML = '<p style="color: #4CAF50; font-size: 24px; text-align: center; font-weight: bold;">NO OBSTACLE - ALL CLEAR</p>';
+            } else if (data.hazard_types.length > 0) {
                 alertsDiv.innerHTML = data.hazard_types.map(h => {
                     return `<div style="padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.1); border-radius: 10px;">
                         <strong>${h} DETECTED</strong><br>
