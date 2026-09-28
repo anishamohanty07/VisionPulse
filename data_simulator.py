@@ -104,4 +104,6 @@ def get_data():
 
 if __name__ == '__main__':
     print("Starting Data Simulator on http://127.0.0.1:8080")
-    app.run(host='127.0.0.1', port=8080, debug=False)
+    import os
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=False)
