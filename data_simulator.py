@@ -6,20 +6,9 @@ import random
 from datetime import datetime
 from flask import Flask, jsonify
 
-# AI Imports
-import torch
-import torchvision.transforms as T
-from torchvision.models.detection import fasterrcnn_resnet50_fpn
-
 class HardwareDataSimulator:
     def __init__(self):
         self.vibration_baseline = 0.5
-        
-        # Initialize the AI Animal Detector
-        print("Loading AI Animal Detector...")
-        self.model = fasterrcnn_resnet50_fpn(pretrained=True)
-        self.model.eval() # Set to evaluation mode
-        print("AI Animal Detector ready!")
         
         # These are the ID numbers for animals in the AI's brain
         self.animal_ids = [16, 17, 18, 19, 20, 21, 22, 23, 24, 25] 
