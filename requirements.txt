@@ -5,4 +5,4 @@ aiohttp==3.9.1
 opencv-python-headless==4.8.1.78
 numpy==1.26.2
 python-socketio==5.10.0
-eventlet==0.35.1
+eventlet>=0.36.1
