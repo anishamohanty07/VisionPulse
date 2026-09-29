@@ -141,4 +141,4 @@ if __name__ == '__main__':
     print(f"Fetching data from: {SIMULATOR_URL}")
     
     # Run the app
-    socketio.run(app, host='0.0.0.0', port=PORT, debug=False)
+    socketio.run(app, host='0.0.0.0', port=PORT, debug=False, allow_unsafe_werkzeug=True)
