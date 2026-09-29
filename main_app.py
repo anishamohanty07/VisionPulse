@@ -1,4 +1,5 @@
 # main_app.py - WITH THREE DASHBOARDS
+import os
 import asyncio
 import json
 import base64
@@ -11,6 +12,8 @@ import cv2
 import os
 import threading
 import time
+
+SIMULATOR_URL=os.environ.get('SIMULATOR_URL','http://127.0.0.1:8080')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
@@ -740,8 +743,8 @@ if __name__ == '__main__':
     print("   Main Dashboard:    http://127.0.0.1:5000/")
     print("   Driver HUD:        http://127.0.0.1:5000/driver")
     print("   Control Room:      http://127.0.0.1:5000/control")
-    
+    port = int(os.environ.get('PORT', 5000))
     thread = threading.Thread(target=background_fetch, daemon=True)
     thread.start()
     
-    socketio.run(app, host='127.0.0.1', port=5000, debug=False)
+    socketio.run(app, host='0.0.0.0', port=port, debug=False)
