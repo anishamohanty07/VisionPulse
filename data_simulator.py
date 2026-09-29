@@ -1,3 +1,4 @@
+import os
 import json
 import base64
 import numpy as np
@@ -5,6 +6,7 @@ import cv2
 import random
 from datetime import datetime
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 class HardwareDataSimulator:
     def __init__(self):
@@ -18,15 +20,12 @@ class HardwareDataSimulator:
         Looks at the raw image and returns how confident it is that an animal is there.
         """
         try:
-            # Convert the image to a format the AI understands
             transform = T.Compose([T.ToTensor()])
             img_tensor = transform(image_frame).unsqueeze(0)
             
-            # Ask the AI to look
             with torch.no_grad():
                 predictions = self.model(img_tensor)
             
-            # Check if it found an animal
             for i, score in enumerate(predictions[0]['scores']):
                 label = predictions[0]['labels'][i].item()
                 if label in self.animal_ids and score > 0.5:
@@ -96,11 +95,16 @@ class HardwareDataSimulator:
 # Flask App Setup
 # ==========================================
 app = Flask(__name__)
+CORS(app)
 simulator = HardwareDataSimulator()
 
 @app.route('/data')
 def get_data():
-    return simulator.generate_data()
+    return jsonify(simulator.generate_data())
+if __name__ == '__main__':
+    import os
+    port = int(os.environ.get('PORT',8080))
+    app.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == '__main__':
     print("Starting Data Simulator on http://127.0.0.1:8080")
